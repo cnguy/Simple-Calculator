@@ -258,6 +258,9 @@ class App(Frame):
         self.output.configure(state=DISABLED)
 
     def enter(self, event=None):
+        self.errorOutput.configure(state=NORMAL)
+        self.errorOutput.delete(0.0, END)
+        self.errorOutput.configure(state=DISABLED)
         self.parseString(self.output)
 
     def parseString(self, string):
@@ -266,6 +269,10 @@ class App(Frame):
         self.output.delete(0.0, END)
         self.output.insert(END, self.eval_binary_expr(*(self.firstNumberFieldContents.get().split())))
         self.output.configure(state=DISABLED)
+        # print (self.output)
+        # print (str(self.output))
+        self.firstNumberFieldContents.set(self.eval_binary_expr(*(self.firstNumberFieldContents.get().split())))
+        self.firstNumberField.icursor(END)
 
     # def performOperation(self, firstOperand, secondOperand, operation):
     #     if operation == '+':
