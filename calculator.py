@@ -54,16 +54,17 @@ class App(Frame):
         self.firstNumberField.grid(row=0, sticky=W) # columnspan=80, sticky=W
 
         self.firstNumberFieldContents = StringVar()
-        self.firstNumberFieldContents.set(0.0)
+        self.firstNumberFieldContents.set('0')
         self.firstNumberField["textvariable"] = self.firstNumberFieldContents
 
-        self.secondNumberField = Entry()
-        # self.secondNumberField.pack()
-        self.secondNumberField.grid(row=1, sticky=W) # , columnspan=80, sticky=W
-
-        self.secondNumberFieldContents = StringVar()
-        self.secondNumberFieldContents.set(0.0)
-        self.secondNumberField["textvariable"] = self.secondNumberFieldContents
+        self.firstNumberField.bind('<Key-Return>', self.enter)
+        # self.secondNumberField = Entry()
+        # # self.secondNumberField.pack()
+        # self.secondNumberField.grid(row=1, sticky=W) # , columnspan=80, sticky=W
+        #
+        # self.secondNumberFieldContents = StringVar()
+        # self.secondNumberFieldContents.set(0.0)
+        # self.secondNumberField["textvariable"] = self.secondNumberFieldContents
 
         # self.hi_there = tk.Button(self)
         # self.hi_there["text"] = "Hello World\n(click me)"
@@ -156,9 +157,11 @@ class App(Frame):
 
         self.output.configure(state=NORMAL)
         self.output.delete(0.0, END)
+        self.firstNumberFieldContents.set(self.firstNumberFieldContents.get() + " + ")
         # print(float(self.firstNumberFieldContents.get()) + float(self.secondNumberFieldContents.get()))
-        self.output.insert(END, str(float(self.firstNumberFieldContents.get()) + float(self.secondNumberFieldContents.get())))
+        # self.output.insert(END, str(float(self.firstNumberFieldContents.get()) + float(self.secondNumberFieldContents.get())))
         self.output.configure(state=DISABLED)
+        self.firstNumberField.icursor(END)
 
     def minus(self):
         self.errorOutput.configure(state=NORMAL)
@@ -167,9 +170,11 @@ class App(Frame):
 
         self.output.configure(state=NORMAL)
         self.output.delete(0.0, END)
+        self.firstNumberFieldContents.set(self.firstNumberFieldContents.get() + " - ")
         # print(self.firstNumberFieldContents.get() - self.secondNumberFieldContents.get())
-        self.output.insert(END, str(float(self.firstNumberFieldContents.get()) - float(self.secondNumberFieldContents.get())))
+        # self.output.insert(END, str(float(self.firstNumberFieldContents.get()) - float(self.secondNumberFieldContents.get())))
         self.output.configure(state=DISABLED)
+        self.firstNumberField.icursor(END)
 
     def multiply(self):
         self.errorOutput.configure(state=NORMAL)
@@ -178,44 +183,57 @@ class App(Frame):
 
         self.output.configure(state=NORMAL)
         self.output.delete(0.0, END)
+        self.firstNumberFieldContents.set(self.firstNumberFieldContents.get() + " * ")
         # print(self.firstNumberFieldContents.get() * self.secondNumberFieldContents.get())
-        self.output.insert(END, str(float(self.firstNumberFieldContents.get()) * float(self.secondNumberFieldContents.get())))
+        # self.output.insert(END, str(float(self.firstNumberFieldContents.get()) * float(self.secondNumberFieldContents.get())))
         self.output.configure(state=DISABLED)
+        self.firstNumberField.icursor(END)
 
+    # def divide(self):
+    #     self.errorOutput.configure(state=NORMAL)
+    #     self.errorOutput.delete(0.0, END)
+    #     self.errorOutput.configure(state=DISABLED)
+    #
+    #     if float(self.secondNumberFieldContents.get()) == 0:
+    #         # print('Cannot divide by 0!')
+    #         self.errorOutput.configure(state=NORMAL)
+    #         self.errorOutput.delete(0.0, END)
+    #         self.errorOutput.insert(END, 'ERROR: Cannot divide by 0!')
+    #         self.errorOutput.configure(state=DISABLED)
+    #     else:
+    #         self.output.configure(state=NORMAL)
+    #         self.output.delete(0.0, END)
+    #         # print(self.firstNumberFieldContents.get() / self.secondNumberFieldContents.get())
+    #         self.output.insert(END, str(float(self.firstNumberFieldContents.get()) / float(self.secondNumberFieldContents.get())))
+    #         self.output.configure(state=DISABLED)
     def divide(self):
-        self.errorOutput.configure(state=NORMAL)
-        self.errorOutput.delete(0.0, END)
-        self.errorOutput.configure(state=DISABLED)
-
-        if float(self.secondNumberFieldContents.get()) == 0:
-            # print('Cannot divide by 0!')
-            self.errorOutput.configure(state=NORMAL)
-            self.errorOutput.delete(0.0, END)
-            self.errorOutput.insert(END, 'ERROR: Cannot divide by 0!')
-            self.errorOutput.configure(state=DISABLED)
-        else:
-            self.output.configure(state=NORMAL)
-            self.output.delete(0.0, END)
-            # print(self.firstNumberFieldContents.get() / self.secondNumberFieldContents.get())
-            self.output.insert(END, str(float(self.firstNumberFieldContents.get()) / float(self.secondNumberFieldContents.get())))
-            self.output.configure(state=DISABLED)
+        self.output.configure(state=NORMAL)
+        self.output.delete(0.0, END)
+        self.firstNumberFieldContents.set(self.firstNumberFieldContents.get() + " / ")
+        # print(self.firstNumberFieldContents.get() / self.secondNumberFieldContents.get())
+        # self.output.insert(END, str(float(self.firstNumberFieldContents.get()) / float(self.secondNumberFieldContents.get())))
+        self.output.configure(state=DISABLED)
+        self.firstNumberField.icursor(END)
 
     def addThroughString(self, string):
         pass
 
     def clear(self):
+        self.output.configure(state=NORMAL)
+        self.output.delete(0.0, END)
+        self.output.configure(state=DISABLED)
+
         self.errorOutput.configure(state=NORMAL)
         self.errorOutput.delete(0.0, END)
         self.errorOutput.configure(state=DISABLED)
 
-        if float(self.firstNumberFieldContents.get()) == 0 and float(self.secondNumberFieldContents.get()) == 0:
+        if float(self.firstNumberFieldContents.get() == 0):
             self.errorOutput.configure(state=NORMAL)
             self.errorOutput.delete(0.0, END)
             self.errorOutput.insert(END, 'ERROR: Already cleared!')
             self.errorOutput.configure(state=DISABLED)
         else:
-            self.firstNumberFieldContents.set(0.0)
-            self.secondNumberFieldContents.set(0.0)
+            self.firstNumberFieldContents.set(0)
 
     def square(self):
         self.errorOutput.configure(state=NORMAL)
@@ -239,7 +257,7 @@ class App(Frame):
         self.output.insert(END, str(sqrt(float(self.firstNumberFieldContents.get()))))
         self.output.configure(state=DISABLED)
 
-    def enter(self):
+    def enter(self, event=None):
         self.parseString(self.output)
 
     def parseString(self, string):
@@ -249,17 +267,17 @@ class App(Frame):
         self.output.insert(END, self.eval_binary_expr(*(self.firstNumberFieldContents.get().split())))
         self.output.configure(state=DISABLED)
 
-    def performOperation(self, firstOperand, secondOperand, operation):
-        if operation == '+':
-            return float(firstOperand) + float(secondOperand)
-        elif operation == '-':
-            return float(firstOperand) - float(secondOperand)
-        elif operation == '*':
-            return float(firstOperand) * float(secondOperand)
-        elif operation == '/':
-            return float(firstOperand) / float(secondOperand)
-        else:
-            print("ERROR: Invalid operand!")
+    # def performOperation(self, firstOperand, secondOperand, operation):
+    #     if operation == '+':
+    #         return float(firstOperand) + float(secondOperand)
+    #     elif operation == '-':
+    #         return float(firstOperand) - float(secondOperand)
+    #     elif operation == '*':
+    #         return float(firstOperand) * float(secondOperand)
+    #     elif operation == '/':
+    #         return float(firstOperand) / float(secondOperand)
+    #     else:
+    #         print("ERROR: Invalid operand!")
 
     # START: Code I found on StackedOverflow
     # I'm really bad at parsing strings.
@@ -274,7 +292,13 @@ class App(Frame):
 
     def eval_binary_expr(self, op1, operator, op2):
         op1, op2 = float(op1), float(op2)
-        return self.get_operator_fn(operator)(op1, op2)
+        if operator == '/' and op2 == 0:
+            self.errorOutput.configure(state=NORMAL)
+            self.errorOutput.delete(0.0, END)
+            self.errorOutput.insert(END, 'ERROR: Cannot divide by 0!')
+            self.errorOutput.configure(state=DISABLED)
+        else:
+            return self.get_operator_fn(operator)(op1, op2)
     # END
 
     # def changeBackgroundColorToBlack(self, event):
