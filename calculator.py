@@ -240,6 +240,7 @@ class App(Frame):
         self.errorOutput.delete(0.0, END)
         self.errorOutput.configure(state=DISABLED)
 
+        self.firstNumberFieldContents.set(str(float(self.firstNumberFieldContents.get()) * float(self.firstNumberFieldContents.get())))
         # self.output.configure(state=NORMAL)
         # self.output.delete(0.0, END)
         # print(self.firstNumberFieldContents.get() * self.firstNumberFieldContents.get())
@@ -251,6 +252,7 @@ class App(Frame):
         self.errorOutput.delete(0.0, END)
         self.errorOutput.configure(state=DISABLED)
 
+        self.firstNumberFieldContents.set(str(sqrt(float(self.firstNumberFieldContents.get()))))
         # self.output.configure(state=NORMAL)
         # self.output.delete(0.0, END)
         # print(sqrt(self.firstNumberFieldContents.get()))
