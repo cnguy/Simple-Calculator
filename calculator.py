@@ -52,7 +52,7 @@ class App(Frame):
         # self.firstNumberField.pack()
         self.firstNumberField.grid(row=0, sticky=W) # columnspan=80, sticky=W
 
-        self.firstNumberFieldContents = DoubleVar()
+        self.firstNumberFieldContents = StringVar()
         self.firstNumberFieldContents.set(0.0)
         self.firstNumberField["textvariable"] = self.firstNumberFieldContents
 
@@ -60,7 +60,7 @@ class App(Frame):
         # self.secondNumberField.pack()
         self.secondNumberField.grid(row=1, sticky=W) # , columnspan=80, sticky=W
 
-        self.secondNumberFieldContents = DoubleVar()
+        self.secondNumberFieldContents = StringVar()
         self.secondNumberFieldContents.set(0.0)
         self.secondNumberField["textvariable"] = self.secondNumberFieldContents
 
@@ -104,14 +104,19 @@ class App(Frame):
 
         self.squareButton = tk.Button(self.buttonFrame)
         self.squareButton.grid(row=3, sticky=W+E) # , sticky=W
-        self.squareButton["text"] = "^2"
+        self.squareButton["text"] = "²"
         self.squareButton["command"] = self.square
         # # self.squareButton.pack(side="left")
 
         self.squareRootButton = tk.Button(self.buttonFrame)
         self.squareRootButton.grid(row=3, column=1, sticky=W+E) # , sticky=E
-        self.squareRootButton["text"] = "sqrt"
+        self.squareRootButton["text"] = "√"
         self.squareRootButton["command"] = self.squareRoot
+
+        self.enterButton = tk.Button(self.buttonFrame)
+        self.enterButton.grid(row=4, column=0, sticky=W)
+        self.enterButton["text"] = '='
+        self.enterButton["command"] = self.enter
 
         self.output = Text(height=1)
         self.output.config(state=DISABLED)
@@ -142,40 +147,40 @@ class App(Frame):
     def add(self):
         self.output.configure(state=NORMAL)
         self.output.delete(0.0, END)
-        print(self.firstNumberFieldContents.get() + self.secondNumberFieldContents.get())
-        self.output.insert(END, str(self.firstNumberFieldContents.get() + self.secondNumberFieldContents.get()))
+        # print(float(self.firstNumberFieldContents.get()) + float(self.secondNumberFieldContents.get()))
+        self.output.insert(END, str(float(self.firstNumberFieldContents.get()) + float(self.secondNumberFieldContents.get())))
         self.output.configure(state=DISABLED)
 
     def minus(self):
         self.output.configure(state=NORMAL)
         self.output.delete(0.0, END)
-        print(self.firstNumberFieldContents.get() - self.secondNumberFieldContents.get())
-        self.output.insert(END, str(self.firstNumberFieldContents.get() - self.secondNumberFieldContents.get()))
+        # print(self.firstNumberFieldContents.get() - self.secondNumberFieldContents.get())
+        self.output.insert(END, str(float(self.firstNumberFieldContents.get()) - float(self.secondNumberFieldContents.get())))
         self.output.configure(state=DISABLED)
 
     def multiply(self):
         self.output.configure(state=NORMAL)
         self.output.delete(0.0, END)
-        print(self.firstNumberFieldContents.get() * self.secondNumberFieldContents.get())
-        self.output.insert(END, str(self.firstNumberFieldContents.get() * self.secondNumberFieldContents.get()))
+        # print(self.firstNumberFieldContents.get() * self.secondNumberFieldContents.get())
+        self.output.insert(END, str(float(self.firstNumberFieldContents.get()) * float(self.secondNumberFieldContents.get())))
         self.output.configure(state=DISABLED)
 
     def divide(self):
         self.output.configure(state=NORMAL)
         self.output.delete(0.0, END)
-        if self.secondNumberFieldContents.get() == 0:
-            print('Cannot divide by 0!')
-            self.output.insert(END, 'Cannot divide by 0!')
+        if float(self.secondNumberFieldContents.get()) == 0:
+            # print('Cannot divide by 0!')
+            self.output.insert(END, 'ERROR: Cannot divide by 0!')
         else:
-            print(self.firstNumberFieldContents.get() / self.secondNumberFieldContents.get())
-            self.output.insert(END, str(self.firstNumberFieldContents.get() / self.secondNumberFieldContents.get()))
+            # print(self.firstNumberFieldContents.get() / self.secondNumberFieldContents.get())
+            self.output.insert(END, str(float(self.firstNumberFieldContents.get()) / float(self.secondNumberFieldContents.get())))
         self.output.configure(state=DISABLED)
 
     def clear(self):
-        if self.firstNumberFieldContents.get() == 0 and self.secondNumberFieldContents.get() == 0:
+        if float(self.firstNumberFieldContents.get()) == 0 and float(self.secondNumberFieldContents.get()) == 0:
             self.output.configure(state=NORMAL)
             self.output.delete(0.0, END)
-            self.output.insert(END, 'Already cleared!')
+            self.output.insert(END, 'ERROR: Already cleared!')
             self.output.configure(state=DISABLED)
         else:
             self.firstNumberFieldContents.set(0.0)
@@ -184,16 +189,34 @@ class App(Frame):
     def square(self):
         self.output.configure(state=NORMAL)
         self.output.delete(0.0, END)
-        print(self.firstNumberFieldContents.get() * self.firstNumberFieldContents.get())
-        self.output.insert(END, str(self.firstNumberFieldContents.get() * self.firstNumberFieldContents.get()))
+        # print(self.firstNumberFieldContents.get() * self.firstNumberFieldContents.get())
+        self.output.insert(END, str(float(self.firstNumberFieldContents.get()) * float(self.firstNumberFieldContents.get())))
         self.output.configure(state=DISABLED)
 
     def squareRoot(self):
         self.output.configure(state=NORMAL)
         self.output.delete(0.0, END)
-        print(sqrt(self.firstNumberFieldContents.get()))
-        self.output.insert(END, str(sqrt(self.firstNumberFieldContents.get())))
+        # print(sqrt(self.firstNumberFieldContents.get()))
+        self.output.insert(END, str(sqrt(float(self.firstNumberFieldContents.get()))))
         self.output.configure(state=DISABLED)
+
+    def enter(self):
+        self.parseString(self, self.output)
+
+    def parseString(self, string):
+        pass
+
+    def performOperation(self, firstOperand, secondOperand, operation):
+        if operation == '+':
+            return float(firstOperand) + float(secondOperand)
+        elif operation == '-':
+            return float(firstOperand) - float(secondOperand)
+        elif operation == '*':
+            return float(firstOperand) * float(secondOperand)
+        elif operation == '/':
+            return float(firstOperand) / float(secondOperand)
+        else:
+            print("ERROR: Invalid operand!")
 
     # def changeBackgroundColorToBlack(self, event):
     #     self.event.widget["activeforeground"] = "black"
