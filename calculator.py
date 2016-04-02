@@ -50,7 +50,7 @@ class App(Frame):
         # TWO TEXT FIELDS FOR MULTIPLYING
         self.firstNumberField = Entry()
         # self.firstNumberField.pack()
-        self.firstNumberField.grid(row=0) # columnspan=80, sticky=W
+        self.firstNumberField.grid(row=0, sticky=W) # columnspan=80, sticky=W
 
         self.firstNumberFieldContents = DoubleVar()
         self.firstNumberFieldContents.set(0.0)
@@ -58,7 +58,7 @@ class App(Frame):
 
         self.secondNumberField = Entry()
         # self.secondNumberField.pack()
-        self.secondNumberField.grid(row=1) # , columnspan=80, sticky=W
+        self.secondNumberField.grid(row=1, sticky=W) # , columnspan=80, sticky=W
 
         self.secondNumberFieldContents = DoubleVar()
         self.secondNumberFieldContents.set(0.0)
@@ -71,7 +71,7 @@ class App(Frame):
         # self.hi_there.grid(row=5)
 
         self.buttonFrame = Frame(root)
-        self.buttonFrame.grid(row=2, column=0, columnspan=5)
+        self.buttonFrame.grid(row=2, column=0, columnspan=5, sticky=W)
 
         self.additionButton = tk.Button(self.buttonFrame)
         self.additionButton.grid(row=2, column=0, sticky=W+E) # , sticky=W
@@ -86,30 +86,30 @@ class App(Frame):
         #self.minusButton.pack(side="left")
 
         self.multiplyButton = tk.Button(self.buttonFrame)
-        self.multiplyButton.grid(row=2, column=2, sticky=W) # , sticky=W
+        self.multiplyButton.grid(row=2, column=2, sticky=W+E) # , sticky=W
         self.multiplyButton["text"] = "*"
         self.multiplyButton["command"] = self.multiply
         # self.multiplyButton.pack(side="left")
 
         self.divideButton = tk.Button(self.buttonFrame)
-        self.divideButton.grid(row=2, column=3, sticky=W) # , sticky=W
+        self.divideButton.grid(row=2, column=3, sticky=W+E) # , sticky=W
         self.divideButton["text"] = "/"
         self.divideButton["command"] = self.divide
         # self.divideButton.pack(side="left")
 
         self.clearButton = tk.Button(self.buttonFrame)
-        self.clearButton.grid(row=2, column=4, sticky=W)  # , sticky=W
+        self.clearButton.grid(row=2, column=4, sticky=W+E)  # , sticky=W
         self.clearButton["text"] = "CE"
         self.clearButton["command"] = self.clear
 
         self.squareButton = tk.Button(self.buttonFrame)
-        self.squareButton.grid(row=3, sticky=W) # , sticky=W
+        self.squareButton.grid(row=3, sticky=W+E) # , sticky=W
         self.squareButton["text"] = "^2"
         self.squareButton["command"] = self.square
         # # self.squareButton.pack(side="left")
 
         self.squareRootButton = tk.Button(self.buttonFrame)
-        self.squareRootButton.grid(row=3, column=1, sticky=W) # , sticky=E
+        self.squareRootButton.grid(row=3, column=1, sticky=W+E) # , sticky=E
         self.squareRootButton["text"] = "sqrt"
         self.squareRootButton["command"] = self.squareRoot
 
@@ -204,6 +204,6 @@ app = App(root)
 app.master.title("My Calculator")
 # app.master.maxsize(480, 600)
 app.master.resizable(width=False, height=False)
-app.master.size()
+root.geometry('{}x{}'.format(200, 200))
 app.master.minsize(200, 200)
 app.mainloop()
