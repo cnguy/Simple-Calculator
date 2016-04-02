@@ -106,7 +106,7 @@ class App(Frame):
         self.errorOutput.delete(0.0, END)
         self.errorOutput.configure(state=DISABLED)
 
-        if float(self.firstNumberFieldContents.get() == 0):
+        if float(self.firstNumberFieldContents.get()) == 0:
             self.errorOutput.configure(state=NORMAL)
             self.errorOutput.delete(0.0, END)
             self.errorOutput.insert(END, 'ERROR: Already cleared!')
