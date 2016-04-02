@@ -2,7 +2,7 @@
 # SORRY FOR THIS MESSY CODE AND BAD VARIABLE NAMES AND ALL THAT. I'm just learning and having fun!
 # I will refactor the code and clean up everything once I get comfortable. :]
 # For educational purposes only. Created with the amazing PyCharm!
-from tkinter import Frame, Entry, DoubleVar
+from tkinter import * # Frame, Entry, DoubleVar
 import tkinter as tk
 
 class App(Frame):
@@ -45,17 +45,17 @@ class App(Frame):
 
     def createWidgets(self):
         # TWO TEXT FIELDS FOR MULTIPLYING
-        self.firstNumberField = Entry()
+        self.firstNumberField = Entry(self)
         # self.firstNumberField.pack()
-        self.firstNumberField.grid(row=2, column=0)
+        self.firstNumberField.grid(row=0, columnspan=30)
 
         self.firstNumberFieldContents = DoubleVar()
         self.firstNumberFieldContents.set(0.0)
         self.firstNumberField["textvariable"] = self.firstNumberFieldContents
 
-        self.secondNumberField = Entry()
+        self.secondNumberField = Entry(self)
         # self.secondNumberField.pack()
-        self.secondNumberField.grid(row=3, column=0)
+        self.secondNumberField.grid(row=1, columnspan=30)
 
         self.secondNumberFieldContents = DoubleVar()
         self.secondNumberFieldContents.set(0.0)
@@ -68,31 +68,31 @@ class App(Frame):
         # self.hi_there.grid(row=5)
 
         self.additionButton = tk.Button(self)
-        self.additionButton.grid(row=0, column=0)
+        self.additionButton.grid(row=2, column=0, sticky=W)
         self.additionButton["text"] = "+"
         self.additionButton["command"] = self.add
         # self.additionButton.pack(side="left")
 
         self.minusButton = tk.Button(self)
-        self.minusButton.grid(row=0, column=1)
+        self.minusButton.grid(row=2, column=1, sticky=W)
         self.minusButton["text"] = "-"
         self.minusButton["command"] = self.minus
         #self.minusButton.pack(side="left")
 
         self.multiplyButton = tk.Button(self)
-        self.multiplyButton.grid(row=0, column=2)
+        self.multiplyButton.grid(row=2, column=2, sticky=W)
         self.multiplyButton["text"] = "*"
         self.multiplyButton["command"] = self.multiply
         # self.multiplyButton.pack(side="left")
 
         self.divideButton = tk.Button(self)
-        self.divideButton.grid(row=0, column=3)
+        self.divideButton.grid(row=2, column=3, sticky=W)
         self.divideButton["text"] = "/"
         self.divideButton["command"] = self.divide
         # self.divideButton.pack(side="left")
 
         self.squareButton = tk.Button(self)
-        self.squareButton.grid(row=1)
+        self.squareButton.grid(row=3, sticky=W)
         self.squareButton["text"] = "^2"
         self.squareButton["command"] = self.square
         # # self.squareButton.pack(side="left")
@@ -104,11 +104,10 @@ class App(Frame):
         # # self.backgroundColorToBlackButton.pack(side="bottom")
         # self.backgroundColorToBlackButton.grid(row=4)
         #
-        # # self.QUIT = tk.Button(self, text="QUIT", fg="red",
-        # #                       command=root.destroy)
-        # self.quitButton = tk.Button(self, text="quit", command=root.destroy)
-        # # self.quitButton.pack(side="bottom")
-        # self.quitButton.grid(row=5)
+        # self.QUIT = tk.Button(self, text="QUIT", fg="red",
+        #                       command=root.destroy)
+        self.quitButton = tk.Button(self, text="quit", command=root.destroy)
+        # self.quitButton.pack(side="bottom")
 
     # def print_contents(self, event):
     #     print("hi. contents of entry is now ---->",
