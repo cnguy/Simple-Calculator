@@ -7,6 +7,7 @@
 
 from tkinter import * # Frame, Entry, DoubleVar
 import tkinter as tk
+import operator
 from math import sqrt
 
 class App(Frame):
@@ -194,9 +195,13 @@ class App(Frame):
             self.errorOutput.configure(state=DISABLED)
         else:
             self.output.configure(state=NORMAL)
+            self.output.delete(0.0, END)
             # print(self.firstNumberFieldContents.get() / self.secondNumberFieldContents.get())
             self.output.insert(END, str(float(self.firstNumberFieldContents.get()) / float(self.secondNumberFieldContents.get())))
             self.output.configure(state=DISABLED)
+
+    def addThroughString(self, string):
+        pass
 
     def clear(self):
         self.errorOutput.configure(state=NORMAL)
@@ -235,10 +240,14 @@ class App(Frame):
         self.output.configure(state=DISABLED)
 
     def enter(self):
-        self.parseString(self, self.output)
+        self.parseString(self.output)
 
     def parseString(self, string):
-        pass
+        # print(self.eval_binary_expr(*("1 + 3".split())))
+        self.output.configure(state=NORMAL)
+        self.output.delete(0.0, END)
+        self.output.insert(END, self.eval_binary_expr(*(self.firstNumberFieldContents.get().split())))
+        self.output.configure(state=DISABLED)
 
     def performOperation(self, firstOperand, secondOperand, operation):
         if operation == '+':
@@ -251,6 +260,22 @@ class App(Frame):
             return float(firstOperand) / float(secondOperand)
         else:
             print("ERROR: Invalid operand!")
+
+    # START: Code I found on StackedOverflow
+    # I'm really bad at parsing strings.
+    # http://stackoverflow.com/questions/1740726/python-turn-string-into-operator
+    def get_operator_fn(self, op):
+        return {
+            '+' : operator.add,
+            '-' : operator.sub,
+            '*' : operator.mul,
+            '/' : operator.truediv,
+        }[op]
+
+    def eval_binary_expr(self, op1, operator, op2):
+        op1, op2 = float(op1), float(op2)
+        return self.get_operator_fn(operator)(op1, op2)
+    # END
 
     # def changeBackgroundColorToBlack(self, event):
     #     self.event.widget["activeforeground"] = "black"
