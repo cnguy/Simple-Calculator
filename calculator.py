@@ -120,7 +120,11 @@ class App(Frame):
 
         self.output = Text(height=1)
         self.output.config(state=DISABLED)
-        self.output.grid(row=4, column=0, sticky=N+E+S+W)
+        self.output.grid(row=5, column=0, sticky=N+E+S+W)
+
+        self.errorOutput = Text(height=1)
+        self.errorOutput.config(state=DISABLED)
+        self.errorOutput.grid(row=6, column=0, sticky=N+E+S+W)
 
         #
         # self.backgroundColorToBlackButton = tk.Button(self)
@@ -145,6 +149,10 @@ class App(Frame):
     #     print("hi there, everyone!")
 
     def add(self):
+        self.errorOutput.configure(state=NORMAL)
+        self.errorOutput.delete(0.0, END)
+        self.errorOutput.configure(state=DISABLED)
+
         self.output.configure(state=NORMAL)
         self.output.delete(0.0, END)
         # print(float(self.firstNumberFieldContents.get()) + float(self.secondNumberFieldContents.get()))
@@ -152,6 +160,10 @@ class App(Frame):
         self.output.configure(state=DISABLED)
 
     def minus(self):
+        self.errorOutput.configure(state=NORMAL)
+        self.errorOutput.delete(0.0, END)
+        self.errorOutput.configure(state=DISABLED)
+
         self.output.configure(state=NORMAL)
         self.output.delete(0.0, END)
         # print(self.firstNumberFieldContents.get() - self.secondNumberFieldContents.get())
@@ -159,6 +171,10 @@ class App(Frame):
         self.output.configure(state=DISABLED)
 
     def multiply(self):
+        self.errorOutput.configure(state=NORMAL)
+        self.errorOutput.delete(0.0, END)
+        self.errorOutput.configure(state=DISABLED)
+
         self.output.configure(state=NORMAL)
         self.output.delete(0.0, END)
         # print(self.firstNumberFieldContents.get() * self.secondNumberFieldContents.get())
@@ -166,27 +182,41 @@ class App(Frame):
         self.output.configure(state=DISABLED)
 
     def divide(self):
-        self.output.configure(state=NORMAL)
-        self.output.delete(0.0, END)
+        self.errorOutput.configure(state=NORMAL)
+        self.errorOutput.delete(0.0, END)
+        self.errorOutput.configure(state=DISABLED)
+
         if float(self.secondNumberFieldContents.get()) == 0:
             # print('Cannot divide by 0!')
-            self.output.insert(END, 'ERROR: Cannot divide by 0!')
+            self.errorOutput.configure(state=NORMAL)
+            self.errorOutput.delete(0.0, END)
+            self.errorOutput.insert(END, 'ERROR: Cannot divide by 0!')
+            self.errorOutput.configure(state=DISABLED)
         else:
+            self.output.configure(state=NORMAL)
             # print(self.firstNumberFieldContents.get() / self.secondNumberFieldContents.get())
             self.output.insert(END, str(float(self.firstNumberFieldContents.get()) / float(self.secondNumberFieldContents.get())))
-        self.output.configure(state=DISABLED)
+            self.output.configure(state=DISABLED)
 
     def clear(self):
+        self.errorOutput.configure(state=NORMAL)
+        self.errorOutput.delete(0.0, END)
+        self.errorOutput.configure(state=DISABLED)
+
         if float(self.firstNumberFieldContents.get()) == 0 and float(self.secondNumberFieldContents.get()) == 0:
-            self.output.configure(state=NORMAL)
-            self.output.delete(0.0, END)
-            self.output.insert(END, 'ERROR: Already cleared!')
-            self.output.configure(state=DISABLED)
+            self.errorOutput.configure(state=NORMAL)
+            self.errorOutput.delete(0.0, END)
+            self.errorOutput.insert(END, 'ERROR: Already cleared!')
+            self.errorOutput.configure(state=DISABLED)
         else:
             self.firstNumberFieldContents.set(0.0)
             self.secondNumberFieldContents.set(0.0)
 
     def square(self):
+        self.errorOutput.configure(state=NORMAL)
+        self.errorOutput.delete(0.0, END)
+        self.errorOutput.configure(state=DISABLED)
+
         self.output.configure(state=NORMAL)
         self.output.delete(0.0, END)
         # print(self.firstNumberFieldContents.get() * self.firstNumberFieldContents.get())
@@ -194,6 +224,10 @@ class App(Frame):
         self.output.configure(state=DISABLED)
 
     def squareRoot(self):
+        self.errorOutput.configure(state=NORMAL)
+        self.errorOutput.delete(0.0, END)
+        self.errorOutput.configure(state=DISABLED)
+
         self.output.configure(state=NORMAL)
         self.output.delete(0.0, END)
         # print(sqrt(self.firstNumberFieldContents.get()))
