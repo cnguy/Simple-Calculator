@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 # SORRY FOR THIS MESSY CODE AND BAD VARIABLE NAMES AND ALL THAT. I'm just learning and having fun!
 # I will refactor the code and clean up everything once I get comfortable. :]
-# For educational purposes only. Created with the amazing PyCharm!
+# For educational purposes only. Created with PyCharm.
 # I'll break you until you're mine.
 # I'll admit I did 60% trial-and-error, and 40% reading the documentation / searching up questions.
 
-from tkinter import * # Frame, Entry, DoubleVar
+from tkinter import *
 import tkinter as tk
 import operator
 from math import sqrt
@@ -18,7 +18,7 @@ class App(Frame):
 
     def createWidgets(self):
         self.firstNumberField = Entry()
-        self.firstNumberField.grid(row=0, sticky=W) # columnspan=80, sticky=W
+        self.firstNumberField.grid(row=0, sticky=W)
 
         self.firstNumberFieldContents = StringVar()
         self.firstNumberFieldContents.set('0')
@@ -64,8 +64,18 @@ class App(Frame):
         self.squareRootButton["text"] = "√"
         self.squareRootButton["command"] = self.squareRoot
 
+        # self.oppositeButton = tk.Button(self.buttonFrame)
+        # self.oppositeButton.grid(row=4, column=4, sticky=E)
+        # self.oppositeButton["text"] = "+/-"
+        # self.oppositeButton["command"] = self.opposite
+        # An opposite button/function would not work with the way
+        # I designed this calculator.
+        # The user can simply type - in front of a number and it'll be parsed as a negative number.
+        # ex: -3 - 2 = -5.0
+        # ex: 1 - 3.0 = -2.0
+
         self.enterButton = tk.Button(self.buttonFrame)
-        self.enterButton.grid(row=5, column=0, sticky=W)
+        self.enterButton.grid(row=5, column=4, sticky=E)
         self.enterButton["text"] = '='
         self.enterButton["command"] = self.enter
 
@@ -106,7 +116,7 @@ class App(Frame):
         self.errorOutput.delete(0.0, END)
         self.errorOutput.configure(state=DISABLED)
 
-        if float(self.firstNumberFieldContents.get()) == 0:
+        if self.firstNumberFieldContents.get() == '0':
             self.errorOutput.configure(state=NORMAL)
             self.errorOutput.delete(0.0, END)
             self.errorOutput.insert(END, 'ERROR: Already cleared!')
@@ -138,7 +148,7 @@ class App(Frame):
         self.firstNumberFieldContents.set(string + ' ')
         self.firstNumberField.icursor(END)
 
-    # START: Code I found on StackedOverflow
+    # START: Code I found on StackedOverflow, and modified for this program
     # I'm really bad at parsing strings.
     # http://stackoverflow.com/questions/1740726/python-turn-string-into-operator
     def get_operator_fn(self, op):
@@ -166,6 +176,6 @@ root = Tk()
 app = App(root)
 app.master.title("My Calculator")
 app.master.resizable(width=False, height=False)
-root.geometry('{}x{}'.format(200, 150))
-app.master.minsize(200, 150)
+root.geometry('{}x{}'.format(192, 150))
+app.master.minsize(192, 150)
 app.mainloop()
