@@ -21,7 +21,7 @@ class App(Frame):
         self.firstNumberField.grid(row=0, sticky=W)
 
         self.firstNumberFieldContents = StringVar()
-        self.firstNumberFieldContents.set('0')
+        self.firstNumberFieldContents.set('0 ')
         self.firstNumberField["textvariable"] = self.firstNumberFieldContents
 
         self.firstNumberField.bind('<Key-Return>', self.enter)
@@ -122,21 +122,23 @@ class App(Frame):
             self.errorOutput.insert(END, 'ERROR: Already cleared!')
             self.errorOutput.configure(state=DISABLED)
         else:
-            self.firstNumberFieldContents.set(0)
+            self.firstNumberFieldContents.set('0')
 
     def square(self):
         self.errorOutput.configure(state=NORMAL)
         self.errorOutput.delete(0.0, END)
         self.errorOutput.configure(state=DISABLED)
 
-        self.firstNumberFieldContents.set(str(float(self.firstNumberFieldContents.get()) * float(self.firstNumberFieldContents.get())))
+        self.firstNumberFieldContents.set(str(float(self.firstNumberFieldContents.get()) * float(self.firstNumberFieldContents.get())) + ' ')
+        self.firstNumberField.icursor(END)
 
     def squareRoot(self):
         self.errorOutput.configure(state=NORMAL)
         self.errorOutput.delete(0.0, END)
         self.errorOutput.configure(state=DISABLED)
 
-        self.firstNumberFieldContents.set(str(sqrt(float(self.firstNumberFieldContents.get()))))
+        self.firstNumberFieldContents.set(str(sqrt(float(self.firstNumberFieldContents.get()))) + ' ')
+        self.firstNumberField.icursor(END)
 
     def enter(self, event=None):
         self.errorOutput.configure(state=NORMAL)
