@@ -8,7 +8,7 @@
 from tkinter import *
 import tkinter as tk
 import operator
-from math import sqrt
+from math import pow, sqrt, log, log10, pi, e
 
 class App(Frame):
 
@@ -18,10 +18,11 @@ class App(Frame):
         self.createWidgets()
 
     def createWidgets(self):
+        ### ENTRY FIELDS ###
+
         self.entry = Entry()
         self.entry.grid(row=0, sticky=W)
         self.contents = StringVar()
-        self.contents.set('0 ')
         self.entry["textvariable"] = self.contents
         self.entry.focus_set()
         self.entry.icursor(END)
@@ -31,31 +32,56 @@ class App(Frame):
         self.errorOutput.config(state=DISABLED)
         self.errorOutput.grid(row=1, sticky=N+E+S+W)
 
+        ### END ENTRY FIELDS ###
+
         ### BUTTON FRAME AND BUTTONS BELOW ###
 
         self.buttonFrame = Frame(root)
         self.buttonFrame.grid(row=3, columnspan=5, sticky=W)
 
+        # BASIC OPERANDS #
+        # http://effbot.org/zone/tkinter-callbacks.htm #
+
         self.additionButton = tk.Button(self.buttonFrame, text="+", command=lambda: self.appendBasicOperand(0))
-        self.additionButton.grid(row=3, sticky=W+E)
+        self.additionButton.grid(row=3)
 
         self.minusButton = tk.Button(self.buttonFrame, text="-", command=lambda: self.appendBasicOperand(1))
         self.minusButton.grid(row=3, column=1, sticky=W+E)
 
         self.multiplyButton = tk.Button(self.buttonFrame, text="*", command=lambda: self.appendBasicOperand(2))
-        self.multiplyButton.grid(row=3, column=2, sticky=W+E)
+        self.multiplyButton.grid(row=3, column=2)
 
         self.divideButton = tk.Button(self.buttonFrame, text="/", command=lambda: self.appendBasicOperand(3))
         self.divideButton.grid(row=3, column=3, sticky=W+E)
 
-        self.clearButton = tk.Button(self.buttonFrame, text="CE", command=self.clear)
-        self.clearButton.grid(row=3, column=4, sticky=W+E)
+        # END BASIC OPERANDS #
+
+        self.clearButton = tk.Button(self.buttonFrame, text="C", command=self.clear)
+        self.clearButton.grid(row=3, column=4, sticky=E)
 
         self.squareButton = tk.Button(self.buttonFrame, text="²", command=self.square)
-        self.squareButton.grid(row=4, sticky=W+E)
+        self.squareButton.grid(row=4)
 
-        self.squareRootButton = tk.Button(self.buttonFrame, text="√", command=self.squareRoot)
-        self.squareRootButton.grid(row=4, column=1, sticky=W+E)
+        self.cubeButton = tk.Button(self.buttonFrame, text="³", command=self.cube)
+        self.cubeButton.grid(row=4, column=1)
+
+        self.squareRootButton = tk.Button(self.buttonFrame, text="√", font="Arial 9", command=self.squareRoot)
+        self.squareRootButton.grid(row=4, column=2, sticky=W+E)
+
+        self.piButton = tk.Button(self.buttonFrame, text="π", command=self.pi)
+        self.piButton.grid(row=4, column=3)
+
+        self.eButton = tk.Button(self.buttonFrame, text="e", font="Arial 9", command=self.e)
+        self.eButton.grid(row=5)
+
+        self.lnButton = tk.Button(self.buttonFrame, text="ln", font="Arial 9", command=self.ln)
+        self.lnButton.grid(row=5, column=1)
+
+        self.logTwoButton = tk.Button(self.buttonFrame, text="lg₂ ", font="Arial 9", command=self.logTwo)
+        self.logTwoButton.grid(row=5, column=2)
+
+        self.logTenButton = tk.Button(self.buttonFrame, text="lg₁₀", font="Arial 9", command=self.logTen)
+        self.logTenButton.grid(row=5, column=3)
 
         self.enterButton = tk.Button(self.buttonFrame, text="=", command=self.enter)
         self.enterButton.grid(row=5, column=4, sticky=E)
@@ -78,20 +104,50 @@ class App(Frame):
     def clear(self):
         self.errorOutput.configure(state=NORMAL)
         self.errorOutput.delete(0.0, END)
-        if self.contents.get() == '0 ' or self.contents.get() == '0':
+        if len(self.contents.get()) == 0:
             self.errorOutput.insert(END, 'ERROR: Already cleared!')
         else:
-            self.contents.set('0 ')
+            self.contents.set('')
         self.errorOutput.configure(state=DISABLED)
 
     def square(self):
         self.resetErrorOutput()
-        self.contents.set(str(float(self.contents.get()) * float(self.contents.get())) + ' ')
+        self.contents.set(str(pow(float(self.contents.get()), 2)) + ' ')
+        self.entry.icursor(END)
+
+    def cube(self):
+        self.resetErrorOutput()
+        self.contents.set(str(pow(float(self.contents.get()), 3)) + ' ')
         self.entry.icursor(END)
 
     def squareRoot(self):
         self.resetErrorOutput()
         self.contents.set(str(sqrt(float(self.contents.get()))) + ' ')
+        self.entry.icursor(END)
+
+    def pi(self):
+        self.resetErrorOutput()
+        self.contents.set(str(pi))
+        self.entry.icursor(END)
+
+    def e(self):
+        self.resetErrorOutput()
+        self.contents.set(str(e))
+        self.entry.icursor(END)
+
+    def ln(self):
+        self.resetErrorOutput()
+        self.contents.set(str(log(float(self.contents.get()))) + ' ')
+        self.entry.icursor(END)
+
+    def logTwo(self):
+        self.resetErrorOutput()
+        self.contents.set(str(log(float(self.contents.get()), 2)) + ' ')
+        self.entry.icursor(END)
+
+    def logTen(self):
+        self.resetErrorOutput()
+        self.contents.set(str(log10(float(self.contents.get()))) + ' ')
         self.entry.icursor(END)
 
     def enter(self, event=None):
@@ -135,7 +191,7 @@ class App(Frame):
 
 root = Tk()
 app = App(root)
-app.master.title("calculator")
+app.master.title("simple calculator")
 app.master.resizable(width=False, height=False)
 root.geometry('{}x{}'.format(192, 150))
 app.mainloop()
