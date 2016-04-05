@@ -11,144 +11,101 @@ import operator
 from math import sqrt
 
 class App(Frame):
+
     def __init__(self, master=None):
         Frame.__init__(self, master)
         self.grid()
         self.createWidgets()
 
     def createWidgets(self):
-        self.firstNumberField = Entry()
-        self.firstNumberField.grid(row=0, sticky=W)
-
-        self.firstNumberFieldContents = StringVar()
-        self.firstNumberFieldContents.set('0 ')
-        self.firstNumberField["textvariable"] = self.firstNumberFieldContents
-
-        self.firstNumberField.bind('<Key-Return>', self.enter)
-
-        self.buttonFrame = Frame(root)
-        self.buttonFrame.grid(row=3, column=0, columnspan=5, sticky=W)
-
-        self.additionButton = tk.Button(self.buttonFrame)
-        self.additionButton.grid(row=3, column=0, sticky=W+E)
-        self.additionButton["text"] = "+"
-        self.additionButton["command"] = self.add
-
-        self.minusButton = tk.Button(self.buttonFrame)
-        self.minusButton.grid(row=3, column=1, sticky=W+E)
-        self.minusButton["text"] = "-"
-        self.minusButton["command"] = self.minus
-
-        self.multiplyButton = tk.Button(self.buttonFrame)
-        self.multiplyButton.grid(row=3, column=2, sticky=W+E)
-        self.multiplyButton["text"] = "*"
-        self.multiplyButton["command"] = self.multiply
-
-        self.divideButton = tk.Button(self.buttonFrame)
-        self.divideButton.grid(row=3, column=3, sticky=W+E)
-        self.divideButton["text"] = "/"
-        self.divideButton["command"] = self.divide
-
-        self.clearButton = tk.Button(self.buttonFrame)
-        self.clearButton.grid(row=3, column=4, sticky=W+E)
-        self.clearButton["text"] = "CE"
-        self.clearButton["command"] = self.clear
-
-        self.squareButton = tk.Button(self.buttonFrame)
-        self.squareButton.grid(row=4, sticky=W+E)
-        self.squareButton["text"] = "²"
-        self.squareButton["command"] = self.square
-
-        self.squareRootButton = tk.Button(self.buttonFrame)
-        self.squareRootButton.grid(row=4, column=1, sticky=W+E)
-        self.squareRootButton["text"] = "√"
-        self.squareRootButton["command"] = self.squareRoot
-
-        # self.oppositeButton = tk.Button(self.buttonFrame)
-        # self.oppositeButton.grid(row=4, column=4, sticky=E)
-        # self.oppositeButton["text"] = "+/-"
-        # self.oppositeButton["command"] = self.opposite
-        # An opposite button/function would not work with the way
-        # I designed this calculator.
-        # The user can simply type - in front of a number and it'll be parsed as a negative number.
-        # ex: -3 - 2 = -5.0
-        # ex: 1 - 3.0 = -2.0
-
-        self.enterButton = tk.Button(self.buttonFrame)
-        self.enterButton.grid(row=5, column=4, sticky=E)
-        self.enterButton["text"] = '='
-        self.enterButton["command"] = self.enter
+        self.entry = Entry()
+        self.entry.grid(row=0, sticky=W)
+        self.contents = StringVar()
+        self.contents.set('0 ')
+        self.entry["textvariable"] = self.contents
+        self.entry.focus_set()
+        self.entry.icursor(END)
+        self.entry.bind('<Key-Return>', self.enter)
 
         self.errorOutput = Text(height=1)
         self.errorOutput.config(state=DISABLED)
         self.errorOutput.grid(row=1, column=0, sticky=N+E+S+W)
 
-    def add(self):
-        self.errorOutput.configure(state=NORMAL)
-        self.errorOutput.delete(0.0, END)
-        self.errorOutput.configure(state=DISABLED)
+        ### BUTTON FRAME AND BUTTONS BELOW ###
 
-        self.firstNumberFieldContents.set(self.firstNumberFieldContents.get() + " + ")
-        self.firstNumberField.icursor(END)
+        self.buttonFrame = Frame(root)
+        self.buttonFrame.grid(row=3, column=0, columnspan=5, sticky=W)
 
-    def minus(self):
-        self.errorOutput.configure(state=NORMAL)
-        self.errorOutput.delete(0.0, END)
-        self.errorOutput.configure(state=DISABLED)
+        self.additionButton = tk.Button(self.buttonFrame, text="+", command=lambda: self.appendBasicOperand(0))
+        self.additionButton.grid(row=3, column=0, sticky=W+E)
+        self.additionButton["text"] = "+"
 
-        self.firstNumberFieldContents.set(self.firstNumberFieldContents.get() + " - ")
-        self.firstNumberField.icursor(END)
+        self.minusButton = tk.Button(self.buttonFrame, text="-", command=lambda: self.appendBasicOperand(1))
+        self.minusButton.grid(row=3, column=1, sticky=W+E)
 
-    def multiply(self):
-        self.errorOutput.configure(state=NORMAL)
-        self.errorOutput.delete(0.0, END)
-        self.errorOutput.configure(state=DISABLED)
+        self.multiplyButton = tk.Button(self.buttonFrame, text="*", command=lambda: self.appendBasicOperand(2))
+        self.multiplyButton.grid(row=3, column=2, sticky=W+E)
 
-        self.firstNumberFieldContents.set(self.firstNumberFieldContents.get() + " * ")
-        self.firstNumberField.icursor(END)
+        self.divideButton = tk.Button(self.buttonFrame, text="/", command=lambda: self.appendBasicOperand(3))
+        self.divideButton.grid(row=3, column=3, sticky=W+E)
 
-    def divide(self):
-        self.firstNumberFieldContents.set(self.firstNumberFieldContents.get() + " / ")
-        self.firstNumberField.icursor(END)
+        self.clearButton = tk.Button(self.buttonFrame, text="CE", command=self.clear)
+        self.clearButton.grid(row=3, column=4, sticky=W+E)
+
+        self.squareButton = tk.Button(self.buttonFrame, text="²", command=self.square)
+        self.squareButton.grid(row=4, sticky=W+E)
+
+        self.squareRootButton = tk.Button(self.buttonFrame, text="√", command=self.squareRoot)
+        self.squareRootButton.grid(row=4, column=1, sticky=W+E)
+
+        self.enterButton = tk.Button(self.buttonFrame, text="-", command=self.enter)
+        self.enterButton.grid(row=5, column=4, sticky=E)
+
+        ### END BUTTONS ###
+
+    ### FUNCTIONALITY ###
+
+    def appendBasicOperand(self, index):
+        self.resetErrorOutput()
+        switch = {
+            0: " + ",
+            1: " - ",
+            2: " * ",
+            3: " / ",
+        }
+        self.contents.set(self.contents.get() + switch.get(index))
+        self.entry.icursor(END)
 
     def clear(self):
         self.errorOutput.configure(state=NORMAL)
         self.errorOutput.delete(0.0, END)
-        self.errorOutput.configure(state=DISABLED)
 
-        if self.firstNumberFieldContents.get() == '0':
-            self.errorOutput.configure(state=NORMAL)
-            self.errorOutput.delete(0.0, END)
+        if self.contents.get() == '0 ':
             self.errorOutput.insert(END, 'ERROR: Already cleared!')
             self.errorOutput.configure(state=DISABLED)
         else:
-            self.firstNumberFieldContents.set('0')
+            self.contents.set('0 ')
+            self.errorOutput.configure(state=DISABLED)
 
     def square(self):
-        self.errorOutput.configure(state=NORMAL)
-        self.errorOutput.delete(0.0, END)
-        self.errorOutput.configure(state=DISABLED)
+        self.resetErrorOutput()
 
-        self.firstNumberFieldContents.set(str(float(self.firstNumberFieldContents.get()) * float(self.firstNumberFieldContents.get())) + ' ')
-        self.firstNumberField.icursor(END)
+        self.contents.set(str(float(self.contents.get()) * float(self.contents.get())) + ' ')
+        self.entry.icursor(END)
 
     def squareRoot(self):
-        self.errorOutput.configure(state=NORMAL)
-        self.errorOutput.delete(0.0, END)
-        self.errorOutput.configure(state=DISABLED)
+        self.resetErrorOutput()
 
-        self.firstNumberFieldContents.set(str(sqrt(float(self.firstNumberFieldContents.get()))) + ' ')
-        self.firstNumberField.icursor(END)
+        self.contents.set(str(sqrt(float(self.contents.get()))) + ' ')
+        self.entry.icursor(END)
 
     def enter(self, event=None):
-        self.errorOutput.configure(state=NORMAL)
-        self.errorOutput.delete(0.0, END)
-        self.errorOutput.configure(state=DISABLED)
-        self.parseString(str(self.eval_binary_expr(*(self.firstNumberFieldContents.get().split()))))
+        self.resetErrorOutput()
+        self.parseString(str(self.eval_binary_expr(*(self.contents.get().split()))))
 
     def parseString(self, string):
-        self.firstNumberFieldContents.set(string + ' ')
-        self.firstNumberField.icursor(END)
+        self.contents.set(string + ' ')
+        self.entry.icursor(END)
 
     # START: Code I found on StackedOverflow, and modified for this program
     # I'm really bad at parsing strings.
@@ -164,7 +121,7 @@ class App(Frame):
     def eval_binary_expr(self, op1, operator, op2):
         op1, op2 = float(op1), float(op2)
         if operator == '/' and op2 == 0:
-            self.firstNumberFieldContents.set('0')
+            self.contents.set('0')
             self.errorOutput.configure(state=NORMAL)
             self.errorOutput.delete(0.0, END)
             self.errorOutput.insert(END, 'ERROR: Cannot divide by 0!')
@@ -174,10 +131,16 @@ class App(Frame):
             return self.get_operator_fn(operator)(op1, op2)
     # END
 
+    def resetErrorOutput(self):
+        self.errorOutput.configure(state=NORMAL)
+        self.errorOutput.delete(0.0, END)
+        self.errorOutput.configure(state=DISABLED)
+
+    ### END FUNCTIONALITY ###
+
 root = Tk()
 app = App(root)
-app.master.title("My Calculator")
+app.master.title("calculator")
 app.master.resizable(width=False, height=False)
 root.geometry('{}x{}'.format(192, 150))
-app.master.minsize(192, 150)
 app.mainloop()
