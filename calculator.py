@@ -29,16 +29,15 @@ class App(Frame):
 
         self.errorOutput = Text(height=1)
         self.errorOutput.config(state=DISABLED)
-        self.errorOutput.grid(row=1, column=0, sticky=N+E+S+W)
+        self.errorOutput.grid(row=1, sticky=N+E+S+W)
 
         ### BUTTON FRAME AND BUTTONS BELOW ###
 
         self.buttonFrame = Frame(root)
-        self.buttonFrame.grid(row=3, column=0, columnspan=5, sticky=W)
+        self.buttonFrame.grid(row=3, columnspan=5, sticky=W)
 
         self.additionButton = tk.Button(self.buttonFrame, text="+", command=lambda: self.appendBasicOperand(0))
-        self.additionButton.grid(row=3, column=0, sticky=W+E)
-        self.additionButton["text"] = "+"
+        self.additionButton.grid(row=3, sticky=W+E)
 
         self.minusButton = tk.Button(self.buttonFrame, text="-", command=lambda: self.appendBasicOperand(1))
         self.minusButton.grid(row=3, column=1, sticky=W+E)
@@ -58,7 +57,7 @@ class App(Frame):
         self.squareRootButton = tk.Button(self.buttonFrame, text="√", command=self.squareRoot)
         self.squareRootButton.grid(row=4, column=1, sticky=W+E)
 
-        self.enterButton = tk.Button(self.buttonFrame, text="-", command=self.enter)
+        self.enterButton = tk.Button(self.buttonFrame, text="=", command=self.enter)
         self.enterButton.grid(row=5, column=4, sticky=E)
 
         ### END BUTTONS ###
@@ -79,23 +78,19 @@ class App(Frame):
     def clear(self):
         self.errorOutput.configure(state=NORMAL)
         self.errorOutput.delete(0.0, END)
-
-        if self.contents.get() == '0 ':
+        if self.contents.get() == '0 ' or self.contents.get() == '0':
             self.errorOutput.insert(END, 'ERROR: Already cleared!')
-            self.errorOutput.configure(state=DISABLED)
         else:
             self.contents.set('0 ')
-            self.errorOutput.configure(state=DISABLED)
+        self.errorOutput.configure(state=DISABLED)
 
     def square(self):
         self.resetErrorOutput()
-
         self.contents.set(str(float(self.contents.get()) * float(self.contents.get())) + ' ')
         self.entry.icursor(END)
 
     def squareRoot(self):
         self.resetErrorOutput()
-
         self.contents.set(str(sqrt(float(self.contents.get()))) + ' ')
         self.entry.icursor(END)
 
