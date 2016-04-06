@@ -15,11 +15,13 @@ For the four main operands, you can type in binary expressions to quickly calcul
 There MUST be at least one space between the operands and the operator because of the function I used.
 
 _ represents spaces (for readability)
-Examples:
-5_+_2
-5__+_2
-5___+_2
-5_+__2
+Examples of simple calculations:
+5_+_2 -ENTER-
+5__+_2 -ENTER-
+5___+_2 -ENTER-
+5_+__2 -ENTER-
 6_+_4 -ENTER- + 10 -ENTER- * 23 -ENTER- -sqrt-
+1024 -logbase2-
+2048 -logbase2-
 
-After typing the expression, just press enter to quickly calculate it. While the 4 main operators append, the other functions (ln, log, etc) all apply only on a singular expression, and will calculate the value instantly. This means that you cannot do complicated expressions such as 5^2 + 4^5. I also don't have a power to any exponent function yet since I couldn't figure out a way that's consistent with everything else.
+To calculate a binary expression you can just type enter after typing it. While the 4 main operators append, the other functions (ln, log, etc) all apply only on a singular number, and will calculate the value instantly. This means that you cannot do complicated expressions such as 5^2 + 4^5. I also don't have a power to any exponent function yet since I couldn't figure out a way that's consistent with everything else.
