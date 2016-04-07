@@ -1,7 +1,7 @@
 # Simple-Calculator
-Author: Chau Nguyen / ChauTNguyen
-Simple calculator made in Python.
-For educational purposes only.
+Author: Chau Nguyen / ChauTNguyen </br>
+Simple calculator made in Python. </br>
+For educational purposes only. </br></br>
 
 I finally decided for my first personal project I would make a simple calculator. This calculator is kinda buggy,
 but it works really well for me. I wanted to practice GUI development, and at first I was thinking of Java, but it looked
@@ -15,7 +15,7 @@ For the four main operands, you can type in binary expressions to quickly calcul
 There MUST be at least one space between the operands and the operator because of the function I used.
 
 _ represents spaces (for readability)
-Examples of simple calculations:
+Examples of simple calculations: </br>
 5_+_2 -ENTER- </br>
 5__+_2 -ENTER- </br>
 5___+_2 -ENTER- </br>
