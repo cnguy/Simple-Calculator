@@ -16,12 +16,12 @@ There MUST be at least one space between the operands and the operator because o
 
 _ represents spaces (for readability)
 Examples of simple calculations:
-5_+_2 -ENTER-
-5__+_2 -ENTER-
-5___+_2 -ENTER-
-5_+__2 -ENTER-
-6_+_4 -ENTER- + 10 -ENTER- * 23 -ENTER- -sqrt-
-1024 -logbase2-
-2048 -logbase2-
+5_+_2 -ENTER- </br>
+5__+_2 -ENTER- </br>
+5___+_2 -ENTER- </br>
+5_+__2 -ENTER- </br>
+6_+_4 -ENTER- + 10 -ENTER- * 23 -ENTER- -sqrt- </br>
+1024 -logbase2- </br>
+2048 -logbase2- </br>
 
 To calculate a binary expression you can just type enter after typing it. While the 4 main operators append, the other functions (ln, log, etc) all apply only on a singular number, and will calculate the value instantly. This means that you cannot do complicated expressions such as 5^2 + 4^5. I also don't have a power to any exponent function yet since I couldn't figure out a way that's consistent with everything else.
