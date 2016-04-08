@@ -23,7 +23,7 @@ class Calculator(Frame):
 
         self.error_field = Text(height=1)
         self.error_field.config(state=DISABLED)
-        self.error_field.grid(row=1, sticky=N + E + S + W)
+        self.error_field.grid(row=1, sticky=N+E+S+W)
 
     def create_button_frame(self):
         self.button_frame = Frame(root)
@@ -160,9 +160,9 @@ class Calculator(Frame):
             '/' : operator.truediv,
         }[op]
 
-    def eval_binary_expr(self, op1, op, op2):
-        op1, op2 = float(op1), float(op2)
-        if operator == '/' and op2 == 0:
+    def eval_binary_expr(self, left_operand, op, right_operand):
+        left_operand, right_operand = float(left_operand), float(right_operand)
+        if operator == '/' and right_operand == 0:
             self.contents_of_number_field.set('0')
             self.error_field.configure(state=NORMAL)
             self.error_field.delete(0.0, END)
@@ -170,7 +170,7 @@ class Calculator(Frame):
             self.error_field.configure(state=DISABLED)
             return 0
         else:
-            return self.get_op(op)(op1, op2)
+            return self.get_op(op)(left_operand, right_operand)
 
     def reset_error_output(self):
         self.error_field.configure(state=NORMAL)
