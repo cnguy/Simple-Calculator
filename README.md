@@ -25,3 +25,9 @@ Examples of simple calculations: </br>
 2048 -logbase2- </br>
 
 To calculate a binary expression you can just type enter after typing it. While the 4 main operators append, the other functions (ln, log, etc) all apply only on a singular number, and will calculate the value instantly. This means that you cannot do complicated expressions such as 5^2 + 4^5. I also don't have a power to any exponent function yet since I couldn't figure out a way that's consistent with everything else.
+
+EDIT APRIL 9, 2016:</br>
+I'm now not limited to binary expressions. I can calculate expressions such as 5 + 2 - 3 or 5 / 2 + 3.</br>
+The reason is that the code I found online uses regex to evaluate the operands around * and / first, and then only after doing that does it solve the rest ( + - ). </br>
+
+I don't understand the code fully yet, but I have a general idea of why it works. The calculator does not work with parenthesises yet though.
