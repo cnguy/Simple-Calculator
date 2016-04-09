@@ -1,5 +1,6 @@
 from math import sqrt, log, log10, pi, e
 import operator
+import re
 from tkinter import *
 import tkinter as tk
 
@@ -146,10 +147,14 @@ class Calculator(Frame):
 
     def enter(self, event=None):
         self.reset_error_output()
-        self.parse_str(str(self.eval_binary_expr(*(self.contents_of_number_field.get().split()))))
+        self.eval_expr()
+        # string = str(self.eval_binary_expr(*(self.contents_of_number_field.get().split())))
+        # self.parse_str(str(self.eval_binary_expr(*(self.contents_of_number_field.get().split()))))
+        field_contents = str(self.eval_expr())
+        self.parse_str_and_add_space(field_contents)
 
-    def parse_str(self, string):
-        self.contents_of_number_field.set(string + ' ')
+    def parse_str_and_add_space(self, field_contents):
+        self.contents_of_number_field.set(field_contents + ' ')
         self.number_field.icursor(END)
 
     def get_op(self, op):
@@ -171,6 +176,30 @@ class Calculator(Frame):
             return 0
         else:
             return self.get_op(op)(left_operand, right_operand)
+
+    def eval_expr(self):
+        field_contents = self.contents_of_number_field.get()
+        field_contents = re.sub('\s+', '', field_contents)
+        field_contents = re.split('(-|\+)', field_contents)
+
+        # src: https://gist.github.com/cammckinnon/3971894
+        def solve_term(string):
+            string = re.split('(/|\*)', string)
+            ret = float(string[0])
+            for op, num in zip(string[1::2], string[2::2]):
+                num = float(num)
+                if op == '*':
+                    ret *= num
+                else:
+                    ret /= num
+            return ret
+
+        result = solve_term(field_contents[0])
+
+        for op, num in zip(field_contents[1::2], field_contents[2::2]):
+            result += solve_term(num) * (1 if op == '+' else -1)
+
+        return result
 
     def reset_error_output(self):
         self.error_field.configure(state=NORMAL)
