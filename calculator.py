@@ -1,6 +1,5 @@
 from math import sqrt, log, log10, pi, e
 import operator
-import re
 from tkinter import *
 import tkinter as tk
 
@@ -149,7 +148,7 @@ class Calculator(Frame):
         self.reset_error_output()
         self.eval_expr()
         # string = str(self.eval_binary_expr(*(self.contents_of_number_field.get().split())))
-        # self.parse_str(str(self.eval_binary_expr(*(self.contents_of_number_field.get().split()))))
+        # self.parse_str_and_add_space(string)
         field_contents = str(self.eval_expr())
         self.parse_str_and_add_space(field_contents)
 
@@ -165,10 +164,11 @@ class Calculator(Frame):
             '/' : operator.truediv,
         }[op]
 
+    # can probably delete this, but I want to keep it
     def eval_binary_expr(self, left_operand, op, right_operand):
         left_operand, right_operand = float(left_operand), float(right_operand)
         if operator == '/' and right_operand == 0:
-            self.contents_of_number_field.set('0')
+            self.contents_of_number_field.set('')
             self.error_field.configure(state=NORMAL)
             self.error_field.delete(0.0, END)
             self.error_field.insert(END, 'ERROR: Cannot divide by 0!')
@@ -191,7 +191,15 @@ class Calculator(Frame):
                 if op == '*':
                     ret *= num
                 else:
-                    ret /= num
+                    if num != 0:
+                        ret /= num
+                    else:
+                        self.contents_of_number_field.set('')
+                        self.error_field.configure(state=NORMAL)
+                        self.error_field.delete(0.0, END)
+                        self.error_field.insert(END, 'ERROR: Cannot divide by 0!')
+                        self.error_field.configure(state=DISABLED)
+                        return 0
             return ret
 
         result = solve_term(field_contents[0])
