@@ -1,4 +1,5 @@
 from math import sqrt, log, log10, pi, e
+import re
 import operator
 from tkinter import *
 import tkinter as tk
@@ -178,36 +179,43 @@ class Calculator(Frame):
             return self.get_op(op)(left_operand, right_operand)
 
     def eval_expr(self):
-        field_contents = self.contents_of_number_field.get()
-        field_contents = re.sub('\s+', '', field_contents)
-        field_contents = re.split('(-|\+)', field_contents)
+        try:
+            field_contents = self.contents_of_number_field.get()
+            field_contents = re.sub('\s+', '', field_contents)
+            field_contents = re.split('(-|\+)', field_contents)
 
-        # src: https://gist.github.com/cammckinnon/3971894
-        def solve_term(string):
-            string = re.split('(/|\*)', string)
-            ret = float(string[0])
-            for op, num in zip(string[1::2], string[2::2]):
-                num = float(num)
-                if op == '*':
-                    ret *= num
-                else:
-                    if num != 0:
-                        ret /= num
+            # src: https://gist.github.com/cammckinnon/3971894
+            def solve_term(string):
+                string = re.split('(/|\*)', string)
+                ret = float(string[0])
+                for op, num in zip(string[1::2], string[2::2]):
+                    num = float(num)
+                    if op == '*':
+                        ret *= num
                     else:
-                        self.contents_of_number_field.set('')
-                        self.error_field.configure(state=NORMAL)
-                        self.error_field.delete(0.0, END)
-                        self.error_field.insert(END, 'ERROR: Cannot divide by 0!')
-                        self.error_field.configure(state=DISABLED)
-                        return 0
-            return ret
+                        if num != 0:
+                            ret /= num
+                        else:
+                            self.contents_of_number_field.set('')
+                            self.error_field.configure(state=NORMAL)
+                            self.error_field.delete(0.0, END)
+                            self.error_field.insert(END, 'ERROR: Cannot divide by 0!')
+                            self.error_field.configure(state=DISABLED)
+                            return 0
+                return ret
 
-        result = solve_term(field_contents[0])
+            result = solve_term(field_contents[0])
 
-        for op, num in zip(field_contents[1::2], field_contents[2::2]):
-            result += solve_term(num) * (1 if op == '+' else -1)
+            for op, num in zip(field_contents[1::2], field_contents[2::2]):
+                result += solve_term(num) * (1 if op == '+' else -1)
 
-        return result
+            return result
+        except (ValueError):
+            self.error_field.configure(state=NORMAL)
+            self.error_field.delete(0.0, END)
+            self.error_field.insert(END, 'ERROR: Invalid expression!')
+            self.error_field.configure(state=DISABLED)
+            return 0
 
     def reset_error_output(self):
         self.error_field.configure(state=NORMAL)
