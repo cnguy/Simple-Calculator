@@ -151,7 +151,10 @@ class Calculator(Frame):
         # string = str(self.eval_binary_expr(*(self.contents_of_number_field.get().split())))
         # self.parse_str_and_add_space(string)
         field_contents = str(self.eval_expr())
-        self.parse_str_and_add_space(field_contents)
+        if field_contents != "error":
+            self.parse_str_and_add_space(field_contents)
+        else:
+            self.contents_of_number_field.set('')
 
     def parse_str_and_add_space(self, field_contents):
         self.contents_of_number_field.set(field_contents + ' ')
@@ -200,7 +203,7 @@ class Calculator(Frame):
                             self.error_field.delete(0.0, END)
                             self.error_field.insert(END, 'ERROR: Cannot divide by 0!')
                             self.error_field.configure(state=DISABLED)
-                            return 0
+                            return "error"
                 return ret
 
             result = solve_term(field_contents[0])
@@ -215,7 +218,7 @@ class Calculator(Frame):
             self.error_field.insert(END, 'ERROR: Invalid expression!')
             self.error_field.configure(state=DISABLED)
             self.contents_of_number_field.set('')
-            return 0
+            return "error"
 
     def reset_error_output(self):
         self.error_field.configure(state=NORMAL)
