@@ -60,6 +60,9 @@ class Calculator(Frame):
         self.pi_button = tk.Button(self.button_frame, text="π", command=self.insert_pi)
         self.pi_button.grid(row=4, column=3)
 
+        self.modulus_button = tk.Button(self.button_frame, text="%", command=lambda: self.append_basic_operand(4))
+        self.modulus_button.grid(row=4, column=4)
+        
         self.e_button = tk.Button(self.button_frame, text="e", font="Arial 9", command=self.insert_e)
         self.e_button.grid(row=5)
 
@@ -86,6 +89,7 @@ class Calculator(Frame):
             1: " - ",
             2: " * ",
             3: " / ",
+            4: " % ",
         }
         self.contents_of_number_field.set(self.contents_of_number_field.get() + switch.get(index))
         self.number_field.icursor(END)
@@ -189,13 +193,13 @@ class Calculator(Frame):
 
             # src: https://gist.github.com/cammckinnon/3971894
             def solve_term(string):
-                string = re.split('(/|\*)', string)
+                string = re.split('(/|\*|%)', string)
                 ret = float(string[0])
                 for op, num in zip(string[1::2], string[2::2]):
                     num = float(num)
                     if op == '*':
                         ret *= num
-                    else:
+                    elif op == '/':
                         if num != 0:
                             ret /= num
                         else:
@@ -204,6 +208,16 @@ class Calculator(Frame):
                             self.error_field.insert(END, 'ERROR: Cannot divide by 0!')
                             self.error_field.configure(state=DISABLED)
                             return "error"
+                    else:
+                        if num != 0:
+                            ret %= num
+                        else:
+                            self.error_field.configure(state=NORMAL)
+                            self.error_field.delete(0.0, END)
+                            self.error_field.insert(END, 'ERROR: Cannot divide by 0!')
+                            self.error_field.configure(state=DISABLED)
+                            return "error"
+
                 return ret
 
             result = solve_term(field_contents[0])
