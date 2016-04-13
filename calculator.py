@@ -196,7 +196,6 @@ class Calculator(Frame):
                         if num != 0:
                             ret /= num
                         else:
-                            self.contents_of_number_field.set('')
                             self.error_field.configure(state=NORMAL)
                             self.error_field.delete(0.0, END)
                             self.error_field.insert(END, 'ERROR: Cannot divide by 0!')
@@ -210,11 +209,12 @@ class Calculator(Frame):
                 result += solve_term(num) * (1 if op == '+' else -1)
 
             return result
-        except (ValueError):
+        except ValueError:
             self.error_field.configure(state=NORMAL)
             self.error_field.delete(0.0, END)
             self.error_field.insert(END, 'ERROR: Invalid expression!')
             self.error_field.configure(state=DISABLED)
+            self.contents_of_number_field.set('')
             return 0
 
     def reset_error_output(self):
