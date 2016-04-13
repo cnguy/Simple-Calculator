@@ -3,7 +3,7 @@ import re
 import operator
 from tkinter import *
 import tkinter as tk
-
+from error_messages import *
 
 class Calculator(Frame):
 
@@ -62,7 +62,7 @@ class Calculator(Frame):
 
         self.modulus_button = tk.Button(self.button_frame, text="%", command=lambda: self.append_basic_operand(4))
         self.modulus_button.grid(row=4, column=4)
-        
+
         self.e_button = tk.Button(self.button_frame, text="e", font="Arial 9", command=self.insert_e)
         self.e_button.grid(row=5)
 
@@ -96,17 +96,26 @@ class Calculator(Frame):
 
     def square(self):
         self.reset_error_output()
-        self.contents_of_number_field.set(str(pow(float(self.contents_of_number_field.get()), 2)) + ' ')
+        try:
+            self.contents_of_number_field.set(str(pow(float(self.contents_of_number_field.get()), 2)) + ' ')
+        except ValueError:
+            self.print_error_message(1)
         self.number_field.icursor(END)
 
     def cube(self):
         self.reset_error_output()
-        self.contents_of_number_field.set(str(pow(float(self.contents_of_number_field.get()), 3)) + ' ')
+        try:
+            self.contents_of_number_field.set(str(pow(float(self.contents_of_number_field.get()), 3)) + ' ')
+        except ValueError:
+            self.print_error_message(1)
         self.number_field.icursor(END)
 
     def square_root(self):
         self.reset_error_output()
-        self.contents_of_number_field.set(str(sqrt(float(self.contents_of_number_field.get()))) + ' ')
+        try:
+            self.contents_of_number_field.set(str(sqrt(float(self.contents_of_number_field.get()))) + ' ')
+        except ValueError:
+            self.print_error_message(1)
         self.number_field.icursor(END)
 
     def insert_pi(self):
@@ -127,24 +136,33 @@ class Calculator(Frame):
 
     def ln(self):
         self.reset_error_output()
-        self.contents_of_number_field.set(str(log(float(self.contents_of_number_field.get()))) + ' ')
+        try:
+            self.contents_of_number_field.set(str(log(float(self.contents_of_number_field.get()))) + ' ')
+        except ValueError:
+            self.print_error_message(1)
         self.number_field.icursor(END)
 
     def log_base_two(self):
         self.reset_error_output()
-        self.contents_of_number_field.set(str(log(float(self.contents_of_number_field.get()), 2)) + ' ')
+        try:
+            self.contents_of_number_field.set(str(log(float(self.contents_of_number_field.get()), 2)) + ' ')
+        except ValueError:
+            self.print_error_message(1)
         self.number_field.icursor(END)
 
     def log_base_ten(self):
         self.reset_error_output()
-        self.contents_of_number_field.set(str(log10(float(self.contents_of_number_field.get()))) + ' ')
+        try:
+            self.contents_of_number_field.set(str(log10(float(self.contents_of_number_field.get()))) + ' ')
+        except ValueError:
+            self.print_error_message(1)
         self.number_field.icursor(END)
 
     def clear(self):
         self.error_field.configure(state=NORMAL)
         self.error_field.delete(0.0, END)
         if len(self.contents_of_number_field.get()) == 0:
-            self.error_field.insert(END, 'ERROR: Already cleared!')
+            self.print_error_message(3)
         else:
             self.contents_of_number_field.set('')
         self.error_field.configure(state=DISABLED)
@@ -177,10 +195,7 @@ class Calculator(Frame):
         left_operand, right_operand = float(left_operand), float(right_operand)
         if operator == '/' and right_operand == 0:
             self.contents_of_number_field.set('')
-            self.error_field.configure(state=NORMAL)
-            self.error_field.delete(0.0, END)
-            self.error_field.insert(END, 'ERROR: Cannot divide by 0!')
-            self.error_field.configure(state=DISABLED)
+            self.print_error_message(2)
             return 0
         else:
             return self.get_op(op)(left_operand, right_operand)
@@ -203,10 +218,7 @@ class Calculator(Frame):
                         if num != 0:
                             ret /= num
                         else:
-                            self.error_field.configure(state=NORMAL)
-                            self.error_field.delete(0.0, END)
-                            self.error_field.insert(END, 'ERROR: Cannot divide by 0!')
-                            self.error_field.configure(state=DISABLED)
+                            self.print_error_message(2)
                             return "error"
                     else:
                         if num != 0:
@@ -227,12 +239,14 @@ class Calculator(Frame):
 
             return result
         except ValueError:
-            self.error_field.configure(state=NORMAL)
-            self.error_field.delete(0.0, END)
-            self.error_field.insert(END, 'ERROR: Invalid expression!')
-            self.error_field.configure(state=DISABLED)
-            self.contents_of_number_field.set('')
+            self.print_error_message(0)
             return "error"
+
+    def print_error_message(self, index):
+        self.error_field.configure(state=NORMAL)
+        self.error_field.delete(0.0, END)
+        self.error_field.insert(END, return_error_message(self, index))
+        self.error_field.configure(state=DISABLED)
 
     def reset_error_output(self):
         self.error_field.configure(state=NORMAL)
@@ -243,5 +257,5 @@ root = Tk()
 app = Calculator(root)
 app.master.title("simple calculator")
 app.master.resizable(width=False, height=False)
-root.geometry('{}x{}'.format(192, 150))
+root.geometry('{}x{}'.format(195, 150))
 app.mainloop()
